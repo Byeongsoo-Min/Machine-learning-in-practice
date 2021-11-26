@@ -4,8 +4,6 @@ import sys
 import torch
 from torchvision.transforms import transforms
 
-from . import transforms_video
-
 
 def get_torch_device():
     return torch.device("cuda" if torch.cuda.is_available() else "cpu")

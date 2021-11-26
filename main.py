@@ -80,9 +80,9 @@ if __name__ == "__main__":
               eval_iter=test_loader,
               criterion=criterion,
               optimizer=optimizer,
-              epochs=args.epoch,
+              epochs=args.epochs,
               network_model_path_base=models_dir,
               save_every=args.save_every,
               evaluate_every=True)
-    
+
 
