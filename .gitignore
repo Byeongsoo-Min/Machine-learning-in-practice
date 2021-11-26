@@ -1,3 +1,6 @@
 videos/
 .idea/
 *.pyc
+*.pth
+*.pt
+exps/tensorboard
