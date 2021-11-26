@@ -151,7 +151,7 @@ class TorchModel(nn.Module):
         total_loss = 0
 
         with torch.no_grad():
-            for iteration, batch in enumerate(data_iter):
+            for iteration, (batch, targets) in enumerate(data_iter):
                 batch = self.data_to_device(batch, self.device)
                 targets = self.data_to_device(targets, self.device)
 

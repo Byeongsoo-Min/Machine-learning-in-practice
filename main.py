@@ -2,14 +2,16 @@ import argparse
 import os
 from os import path
 
-from facenet_pytorch import InceptionResnetV1
+from network.inception_resnet_v1 import InceptionResnetV1
 from network.fc_layers import Identity
 import torch
+import torch.nn as nn
 from torch.utils.tensorboard import SummaryWriter
 from network.TorchUtils import TorchModel
 from utils.callbacks import DefaultModelCallback, TensorBoardCallback
 from utils.utils import register_logger, get_torch_device
 
+from dataloader import get_dataloader
 
 def get_args():
     parser = argparse.ArgumentParser(description="PyTorch CIV6 Face Parser")
@@ -31,9 +33,7 @@ def get_args():
                         help="epochs interval for saving the model checkpoints")
     parser.add_argument('--lr_base', type=float, default=0.01,
                         help="learning rate")
-    parser.add_argument('--iterations_per_epoch', type=int, default=20000,
-                        help="number of training iterations")
-    parser.add_argument('--epochs', type=int, default=2,
+    parser.add_argument('--epochs', type=int, default=5,
                         help="number of training epochs")
 
     return parser.parse_args()
@@ -51,28 +51,37 @@ if __name__ == "__main__":
 
     device = get_torch_device()
 
-    train_loader = None
-    test_loader = None
+    train_loader, test_loader = get_dataloader()
 
     if args.checkpoint is not None and path.exists(args.checkpoint):
         model = TorchModel.load_model(args.checkpoint)
     else:
-        model = InceptionResnetV1(pretrained='casia-webface')
+        model = InceptionResnetV1()
+        param_dict = torch.load("pretrained/pretrained.pth")
+        model.load_state_dict(param_dict)
 
         for param in model.parameters():
             param.requires_grad = False
-        model.logits = Identity()
+
+        model.last_linear = Identity()
+        # model.last_linear = nn.Linear(512, 28)
         model = TorchModel(model)
 
+
     # print(model)
-    # for param in model.logits.parameters():
-    #     print(param.requires_grad)
+    # for param in model.model.logits.parameters():
+    #      print(param.requires_grad)
+
+    # assert False
 
     tb_writer = SummaryWriter(log_dir=tb_dir)
     model.register_callback(DefaultModelCallback(visualization_dir=args.exps_dir))
     model.register_callback(TensorBoardCallback(tb_writer=tb_writer))
 
     model = model.to(device).train()
+
+    # print(model)
+
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr_base)
     criterion = torch.nn.CrossEntropyLoss(reduction='mean')
 
