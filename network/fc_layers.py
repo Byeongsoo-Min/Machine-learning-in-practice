@@ -18,5 +18,4 @@ class Identity(torch.nn.Module):
         x = self.relu1(self.fc1(x))
         x = self.relu2(self.fc2(x))
         x = self.softmax(self.fc3(x))
-
         return x

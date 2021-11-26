@@ -22,8 +22,8 @@ def get_dataloader():
 
     train_dataset, test_dataset = torch.utils.data.random_split(image_datasets, [train_size, test_size])
 
-    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=28, shuffle=True)
+    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=32, shuffle=True)
 
-    validation_loader = torch.utils.data.DataLoader(test_dataset, batch_size=28, shuffle=False)
+    validation_loader = torch.utils.data.DataLoader(test_dataset, batch_size=32, shuffle=False)
 
     return train_loader, validation_loader

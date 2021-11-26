@@ -150,12 +150,27 @@ class TorchModel(nn.Module):
         self.notify_callbacks('on_evaluation_start', len(data_iter))
         total_loss = 0
 
+        num_correct = 0
+        n = 0
+
         with torch.no_grad():
             for iteration, (batch, targets) in enumerate(data_iter):
                 batch = self.data_to_device(batch, self.device)
                 targets = self.data_to_device(targets, self.device)
 
                 outputs = self.model(batch)
+
+                for output, gt in zip(outputs, targets):
+                    max_v = 0
+                    label = 0
+                    for i, value in enumerate(output):
+                        if max_v < value:
+                            label = i
+                            max_v = value
+                    if label == gt:
+                        num_correct += 1
+                    n += 1
+
                 loss = criterion(outputs, targets)
 
                 self.notify_callbacks('on_evaluation_step',
@@ -166,6 +181,7 @@ class TorchModel(nn.Module):
 
                 total_loss += loss.item()
 
+        print("accuracy: ", num_correct/n)
         loss = total_loss / len(data_iter)
         self.notify_callbacks('on_evaluation_end')
         return loss

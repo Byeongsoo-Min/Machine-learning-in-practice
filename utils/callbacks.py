@@ -4,7 +4,7 @@ import time
 from abc import ABC, abstractmethod
 import datetime
 import matplotlib.pyplot as plt
-
+import torch
 
 class Callback(ABC):
     @abstractmethod
