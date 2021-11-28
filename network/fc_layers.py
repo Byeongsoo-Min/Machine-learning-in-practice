@@ -11,7 +11,7 @@ class Identity(torch.nn.Module):
         self.fc2 = nn.Linear(512, 128)
         self.relu2 = nn.ReLU()
 
-        self.fc3 = nn.Linear(128, 28)
+        self.fc3 = nn.Linear(128, 48)
         self.softmax = nn.Softmax()
 
     def forward(self, x):

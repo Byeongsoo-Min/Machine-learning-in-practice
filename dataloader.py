@@ -14,7 +14,7 @@ def get_dataloader():
     image_datasets = datasets.ImageFolder(path, data_transforms)
     # print(image_datasets)
     class_names = image_datasets.classes
-    # print(class_names)
+    print(class_names)
 
     import torch
     train_size = int(0.8 *len(image_datasets))
