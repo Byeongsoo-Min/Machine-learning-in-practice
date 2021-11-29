@@ -1,28 +1,37 @@
 import torch
 from torchvision import datasets, models, transforms
 import PIL
-from network.inception_resnet_v1 import InceptionResnetV1
 from network.TorchUtils import TorchModel
 import os
-import random
+import numpy as np
+from IQA_pytorch import SSIM, utils
+from face_point import face_points
+import cv2
 
 
 data_transforms = transforms.Compose([
-    transforms.RandomHorizontalFlip(),
     transforms.ToTensor(),
     transforms.Resize((299, 299)),
     transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
     ])
 
-demo_img = "real\\young.jpg"
+data_transforms_nomal = transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Resize((500, 500)),
+    ])
+
+def flatten(x):
+    return x.view(x.shape[0], -1).detach().numpy()
+
+
+demo_img = "real\\Me2.jpg"
 
 img = PIL.Image.open(demo_img)
 img_t = data_transforms(img)
 img_t = img_t[None,:,:,:]
-#print(img_t)
 model = TorchModel.load_model("exps/models/epoch_55.pt")
 model.eval()
-label = model(img_t)
+label = model(img_t).detach().numpy()
 max_value = 0
 max_index = 0
 
@@ -36,8 +45,39 @@ classes = ['Alexander_faces', 'Amanitore_faces', 'Ambiorix_faces', 'Ba_Trieu_fac
 class_name = classes[max_index]
 print(class_name)
 print(max_value)
-filelist = os.listdir("videos/faces/{}".format(class_name))
-dest_img = random.choice(filelist)
+class_face_path = "videos/faces/{}".format(class_name)
+filelist = os.listdir(class_face_path)
+# class_tensors = []
+# class_tensors_path = "class_tensors/"+class_name+".npy"
+# if not os.path.exists(class_tensors_path):
+#     for file in filelist:
+#         img = PIL.Image.open(os.path.join(class_face_path, file))
+#         img_t_ = data_transforms(img)
+#         class_tensors.append(np.array(img_t_))
+#     np.save(class_tensors_path, class_tensors)
+
+# class_tensors = np.load(class_tensors_path, allow_pickle=True)
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+model = SSIM(channels=3)
+img_t = utils.prepare_image(np.array(data_transforms_nomal(PIL.Image.open(demo_img).convert("RGB")))).to(device)
+img_t = img_t.swapaxes(1,2)
+scores = []
+
+for file in filelist:
+    tensor = utils.prepare_image(PIL.Image.open(os.path.join(class_face_path, file)).convert("RGB")).to(device)
+    # print(img_t.shape, tensor.shape)
+    score = model(img_t, tensor, as_loss=False)
+    scores.append(score)
+max_index = scores.index(max(scores))
+dest_img = filelist[max_index]
+img = cv2.imread(os.path.join(class_face_path, dest_img))
+while len(face_points(img)) == 0:
+    scores[max_index] = 0
+    max_index = scores.index(max(scores))
+    dest_img = filelist[max_index]
+    img = cv2.imread(os.path.join(class_face_path, dest_img))
+
 current_dir = os.getcwd()
 src = current_dir+"\\{}".format(demo_img)
 dest = current_dir+"\\videos\\faces\\{}\\{}".format(class_name, dest_img)

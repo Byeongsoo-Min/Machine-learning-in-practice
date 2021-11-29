@@ -4,4 +4,6 @@ videos/
 *.pth
 *.pt
 exps/tensorboard
-real
+real/
+data/
+
