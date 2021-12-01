@@ -1,0 +1,20 @@
+*{
+    box-sizing: border-box;
+}
+
+
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  }
+  
+
+  
+.header {
+  padding: 30px;
+  text-align: left;
+  background: cadetblue;
+  color: #333;
+  font-size: 30px;
+  }

@@ -5,7 +5,7 @@ import dlib
 import os
 
 dlib_detector = dlib.get_frontal_face_detector()
-dlib_predictor = dlib.shape_predictor(path.join('data', 'shape_predictor_68_face_landmarks.dat'))
+dlib_predictor = dlib.shape_predictor(path.join('C:\deep\Machine-learning-in-practice\data', 'shape_predictor_68_face_landmarks.dat'))
 
 def boundary_points(points, width_percent=0.1, height_percent=0.1):
   """ Produce additional boundary points

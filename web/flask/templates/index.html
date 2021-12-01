@@ -1,0 +1,24 @@
+<html>
+    <style>
+    </style>
+    <head>
+        <title>당근따지</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='style.css') }}>
+    </head>
+    <body>
+        <div class="header">
+            <h2>Upload your face!</h2>
+        </div>
+        <div>
+            <form action = "http://localhost:5001/imageUpload" method = "POST"
+            enctype = "multipart/form-data">
+            <input type="file"
+       id="inputImage" name="inputImage"
+       accept="image/*">
+            <input type="submit"/>
+        </div>
+    </body>
+</html>
+
+

@@ -1,0 +1,20 @@
+<html>
+    <style>
+    </style>
+    <head>
+        <title>당근따지</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
+    </head>
+    <body>
+        <div class="header">
+            <h2> looking for leaders like you..</h2>
+        </div>
+        <div>
+            <video controls="controls">
+                <source src="{{ url_for('static', filename='out.mp4') }}" type=video/mp4>
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </body>
+</html>
