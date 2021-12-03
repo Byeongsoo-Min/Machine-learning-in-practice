@@ -111,6 +111,7 @@ class DefaultModelCallback(Callback):
         pass
 
     def on_training_iteration_end(self, train_loss, val_loss):
+        self.val_loss.append(val_loss)
         train_loss_string = f"Train loss: {train_loss}"
         if val_loss:
             val_loss_string = f"Validation loss: {val_loss}"
