@@ -36,7 +36,7 @@ def generate_demo(img_path):
     img = PIL.Image.open(demo_img)
     img_t = data_transforms(img)
     img_t = img_t[None,:,:,:]
-    model = TorchModel.load_model("C:/deep/Machine-learning-in-practice/exps/models/epoch_55.pt")
+    model = TorchModel.load_model("C:/deep/Machine-learning-in-practice/exps/models/48epoch80/epoch_56.pt")
     model.eval()
     label = model(img_t).detach().numpy()
     max_value = 0

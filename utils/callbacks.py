@@ -76,10 +76,11 @@ class DefaultModelCallback(Callback):
             plt.xlabel('Epoch')
             plt.ylabel('Loss')
 
-            plt.plot(range(1, self.epochs + 1), self.train_losses, label=f'Training loss')
+            line1, = plt.plot(range(1, self.epochs + 1), self.train_losses, label='Training loss')
             if len(self.val_loss) != 0:
-                plt.plot(range(1, self.epochs + 1), self.val_loss, label=f'Validation loss')
+                line2, = plt.plot(range(1, self.epochs + 1), self.val_loss, label='Validation loss')
 
+            plt.legend(handles=[line1, line2])
             plt.savefig(os.path.join(self.visualization_dir, 'loss.png'))
             plt.close()
 

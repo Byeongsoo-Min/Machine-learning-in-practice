@@ -2,7 +2,7 @@ from torchvision import datasets, models, transforms
 
 
 def get_dataloader():
-    path = 'videos/faces'
+    path = 'videos/civ_face'
 
     data_transforms = transforms.Compose([
     transforms.RandomHorizontalFlip(),
@@ -12,7 +12,7 @@ def get_dataloader():
     ])
 
     image_datasets = datasets.ImageFolder(path, data_transforms)
-    # print(image_datasets)
+    print(image_datasets)
     class_names = image_datasets.classes
     print(class_names)
 
@@ -27,3 +27,5 @@ def get_dataloader():
     validation_loader = torch.utils.data.DataLoader(test_dataset, batch_size=32, shuffle=False)
 
     return train_loader, validation_loader
+
+get_dataloader()
