@@ -7,3 +7,5 @@ civFace classifier model https://drive.google.com/file/d/19CAIVim6d_25K6EE-nAVj4
 civ2Face dataset(cycleGAN) https://drive.google.com/file/d/1KjBCaud5YoYnA_S8Btb6nVkvaUmWKZT9/view?usp=sharing
 
 civ2Face cycleGAN model https://drive.google.com/file/d/1YGpzTMdhHPmvuBDRxsuwB_ukyHLJu4ky/view?usp=sharing
+
+cylceGAN https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix
